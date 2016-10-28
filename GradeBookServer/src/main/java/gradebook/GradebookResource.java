@@ -94,8 +94,6 @@ public class GradebookResource {
 			} else {
 				HashMap<String, Student> temp = new HashMap<String, Student>();
 				grades.put(name, temp);
-				// System.out.println(grades.size());
-				// System.out.println(grades.get(name)+grades.);
 
 				Response res = Response.status(Response.Status.CREATED).type(MediaType.APPLICATION_JSON).entity("ADDED")
 						.build();
@@ -126,24 +124,20 @@ public class GradebookResource {
 
 		if (grades.containsKey(gradeitem)) {
 			try {
-				// System.out.println(studentid + gradeitem + marks + feedback);
-				System.out.println(grades.keySet());
 
 				HashMap<String, Student> temp = new HashMap<String, Student>(grades.get(gradeitem));
-				// System.out.println("here1");
+
 				if (!temp.containsKey(studentid)) {
 
 					if (!marks.isEmpty()) {
 						Student s = new Student(studentid, marks, feedback);
 						temp.put(studentid, s);
-						// System.out.println("here2");
+	
 						grades.put(gradeitem, temp);
-						// System.out.println("here3");
 						System.out.println(temp.keySet());
 
 						URI locationURI = URI.create(
 								context.getAbsolutePath() + "/gradeitem/" + gradeitem + "/studentid/" + studentid);
-						// System.out.println(locationURI.toString());
 						Response res = Response.status(Response.Status.CREATED).type(MediaType.APPLICATION_JSON)
 								.location(locationURI).entity("Added").build();
 
@@ -158,7 +152,6 @@ public class GradebookResource {
 				} else {
 					URI locationURI = URI
 							.create(context.getAbsolutePath() + "/gradeitem/" + gradeitem + "/studentid/" + studentid);
-					// System.out.println(locationURI.toString());
 					Response res = Response.status(Response.Status.CONFLICT).type(MediaType.APPLICATION_JSON)
 							.location(locationURI).entity("Already entry exists").build();
 
@@ -196,29 +189,22 @@ public class GradebookResource {
 
 		if (grades.containsKey(gradeitem)) {
 			try {
-				// System.out.println(studentid + gradeitem + marks + feedback);
 				System.out.println(grades.keySet());
 
 				Student s = new Student(studentid, marks, feedback);
 				HashMap<String, Student> temp = new HashMap<String, Student>(grades.get(gradeitem));
-				// System.out.println("here1");
 				if (temp.containsKey(studentid)) {
-					// System.out.println("here1");
 					temp.put(studentid, s);
-					// System.out.println("here2");
 					grades.put(gradeitem, temp);
-					// System.out.println("here3");
 					System.out.println(temp.get(studentid).getMarks());
 					URI locationURI = URI
 							.create(context.getAbsolutePath() + "/gradeitem/" + gradeitem + "/studentid/" + studentid);
-					// System.out.println(locationURI.toString());
 					Response res = Response.status(Response.Status.OK).type(MediaType.APPLICATION_JSON)
 							.location(locationURI).entity("Added").build();
 
 					return res;
 				} else {
 
-					// System.out.println(locationURI.toString());
 					Response res = Response.status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON)
 							.entity("Student does not exist").build();
 
@@ -269,9 +255,7 @@ public class GradebookResource {
 	public Response deleteGrade(@PathParam("gradeitemid") String gradeitemid, @PathParam("id") String id) {
 		if (grades.containsKey(gradeitemid)) {
 			if (grades.get(gradeitemid).containsKey(id)) {
-				System.out.println("Before " + grades.get(gradeitemid).keySet());
 				grades.get(gradeitemid).remove(id);
-				System.out.println("After " + grades.get(gradeitemid).keySet());
 				URI locationURI = URI
 						.create(context.getAbsolutePath() + "/gradeitem/" + gradeitemid + "/studentid/" + id);
 				Response res = Response.status(Response.Status.NO_CONTENT).type(MediaType.APPLICATION_JSON)
